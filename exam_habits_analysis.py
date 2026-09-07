@@ -19,9 +19,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-# ------------------------------------------------------
-# STEP 1: Create a simulated student survey dataset
-# ------------------------------------------------------
+
+#1: Create a simulated student survey dataset
+
 np.random.seed(7)
 n_students = 500
 
@@ -52,23 +52,21 @@ print(df.head())
 df.to_csv("student_survey_data.csv", index=False)
 print("\nFull raw dataset saved to student_survey_data.csv")
 
-# ------------------------------------------------------
-# STEP 2: Basic inspection
-# ------------------------------------------------------
+
+#2: Basic inspection
 print("\nDataset shape:", df.shape)
 print("\nSummary statistics:")
 print(df.describe())
 
-# ------------------------------------------------------
-# STEP 3: Correlation matrix
-# ------------------------------------------------------
+#3: Correlation matrix
+
 correlations = df[["Sleep_Hours", "Coffee_Cups", "Study_Hours", "Exam_Score"]].corr()
 print("\nCorrelation matrix:")
 print(correlations["Exam_Score"].sort_values(ascending=False))
 
-# ------------------------------------------------------
-# STEP 4: The naive (wrong) conclusion someone might jump to
-# ------------------------------------------------------
+
+#4: The naive (wrong) conclusion someone might jump to
+
 coffee_corr = correlations.loc["Coffee_Cups", "Exam_Score"]
 study_corr = correlations.loc["Study_Hours", "Exam_Score"]
 
@@ -87,9 +85,9 @@ driving both coffee consumption AND exam score. Coffee itself
 isn't the cause -- it's just moving alongside the real cause.
 """)
 
-# ------------------------------------------------------
-# STEP 5: Grouping students into study-time buckets
-# ------------------------------------------------------
+
+#5: Grouping students into study-time buckets
+
 df["Study_Level"] = pd.cut(
     df["Study_Hours"],
     bins=[0, 3, 6, 10],
@@ -100,9 +98,9 @@ avg_by_level = df.groupby("Study_Level", observed=True)[["Coffee_Cups", "Exam_Sc
 print("\nAverage coffee and score by study level:")
 print(avg_by_level)
 
-# ------------------------------------------------------
-# STEP 7: Visualize the story (this is the whole point!)
-# ------------------------------------------------------
+
+#6: Visualize the story (this is the whole point!)
+
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 # Left plot: Study Hours vs Exam Score (the REAL relationship)
@@ -121,9 +119,9 @@ plt.tight_layout()
 plt.savefig("correlation_plots.png", dpi=150)
 print("\nPlots saved to correlation_plots.png")
 
-# ------------------------------------------------------
-# STEP 8: Save a summary report
-# ------------------------------------------------------
+
+#7: Save a summary report
+
 summary = pd.DataFrame({
     "Coffee_vs_Score_Correlation": [round(coffee_corr, 2)],
     "Study_vs_Score_Correlation": [round(study_corr, 2)],
